@@ -12,66 +12,23 @@ class FileBrowser(GUI_prerequisite.Prerequisite):
         GUI_prerequisite.Prerequisite.__init__(self)
 
         self.master = tk.Tk()
-        
+
         self.master.title("File Browser")
 
         self.topFrame = tk.Frame(self.master)
 
         self.topFrame.grid()
 
-        self.input1_var = tk.StringVar()
-
-        self.input1_entry = tk.Entry(self.topFrame, font=self.text_font,
-                                     textvariable=self.input1_var,
-                                     width=self.entry_box_width)
-        self.input1_entry.grid(row=1, column=0, padx=self.spacingX,
-                               pady=self.spacingY)
-
-        self.ipb1 = tk.Button(self.topFrame, text="File 1", command=lambda:
-                              self.browse_file(self.input1_var, "File 1"),
-                              font=self.text_font, height=self.button_height,
-                              width=self.button_width)
-
-        self.ipb1.grid(row=1, column=1, padx=self.spacingX, pady=self.spacingY)
-
-        self.input2_var = tk.StringVar()
-        self.input2_entry = tk.Entry(self.topFrame, font=self.text_font,
-                                     textvariable=self.input2_var,
-                                     width=self.entry_box_width)
-
-        self.input2_entry.grid(row=2, column=0, padx=self.spacingX,
-                               pady=self.spacingY)
-
-        self.ipb2 = tk.Button(self.topFrame, text="File 2",
-                              command=lambda: self.browse_file(self.input2_var,
-                                                               "File 2"),
-                              font=self.text_font, height=self.button_height,
-                              width=self.button_width)
-
-        self.ipb2.grid(row=2, column=1, padx=self.spacingX, pady=self.spacingY)
+        Ipb1 = InputRow(self.topFrame, 0, 0, "File 1")
+        Ipb2 = InputRow(self.topFrame, 1, 0, "File 2")
+        Opb2 = InputRow(self.topFrame, 2, 0, "Output", "Output")
 
         self.bottom_frame = tk.Frame(self.master)
         self.bottom_frame.grid(row=2, sticky="w")
-
-        self.output_var = tk.StringVar()
-
-        self.output_entry = tk.Entry(self.topFrame, font=self.text_font,
-                                     textvariable=self.output_var,
-                                     width=self.entry_box_width)
-        self.output_entry.grid(row=3, column=0, padx=self.spacingX,
-                               pady=self.spacingY)
-
-        self.opb = tk.Button(self.topFrame, text="Save", command=lambda:
-                             self.save_output(self.output_var,
-                                              "Output destination"),
-                             font=self.text_font, height=self.button_height,
-                             width=self.button_width)
-        self.opb.grid(row=3, column=1, padx=self.spacingX, pady=self.spacingY)
-
         self.output_box = tk.Text(self.bottom_frame)
-        self.output_box.grid(row=2, column=0, padx=self.spacingX, pady=self.spacingY)
-        
-        
+        self.output_box.grid(row=2, column=0, padx=self.spacingX,
+                             pady=self.spacingY)
+
         self.go_button = tk.Button(self.bottom_frame, text="Go",
                                    font=self.text_font,
                                    width=self.button_width,
@@ -82,19 +39,53 @@ class FileBrowser(GUI_prerequisite.Prerequisite):
 
         self.master.mainloop()
 
-    def save_output(self, output, text):
-        output.set(filedialog.asksaveasfilename(initialdir=".",
-                   title=text, filetypes=(("txt files", "*.txt"),
-                                          ("all files", "*.*"))))
+    def compute_files(self):
+        # Call on main function
+        # Use return value as input for text box
+        # Där Ipb1/2.value = patht to file
+        # och Opb1.value = path där du vill spara en fil
+        # och för output i Text box
+        # self.output_box.insert("output från dit arbete")
+        pass
+
+
+class InputRow(GUI_prerequisite.Prerequisite):
+
+    def __init__(self, frame, row, column, button_name, type="Input"):
+        super().__init__()
+        self.value = tk.StringVar()
+
+        self.entry = tk.Entry(frame, font=self.text_font,
+                              textvariable=self.value,
+                              width=self.entry_box_width)
+
+        self.entry.grid(row=row, column=column, padx=self.spacingX,
+                        pady=self.spacingY)
+
+        if type == "Input":
+            self.button = tk.Button(frame, text=button_name, command=lambda:
+                                    self.browse_file(self.value, button_name),
+                                    font=self.text_font,
+                                    height=self.button_height,
+                                    width=self.button_width)
+        elif type == "Output":
+            self.button = tk.Button(frame, text=button_name, command=lambda:
+                                    self.save_output(self.value, button_name),
+                                    font=self.text_font,
+                                    height=self.button_height,
+                                    width=self.button_width)
+
+        self.button.grid(row=row, column=column+1, padx=self.spacingX,
+                         pady=self.spacingY)
 
     def browse_file(self, var, text):
         var.set(filedialog.askopenfilename(initialdir=".", title=text,
                 filetypes=(("txt files", "*.txt"), ("all files", "*.*"))))
 
-    def compute_files(self):
-        # Call on main function
-        # Use return value as input for text box
-        pass
+    def save_output(self, output, text):
+        output.set(filedialog.asksaveasfilename(initialdir=".",
+                   title=text, filetypes=(("txt files", "*.txt"),
+                                          ("all files", "*.*"))))
 
 
 if __name__ == "__main__":

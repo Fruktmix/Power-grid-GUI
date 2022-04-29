@@ -24,7 +24,7 @@ class FileBrowser(GUI_prerequisite.Prerequisite):
                                pady=self.spacingY)
 
         self.ipb1 = tk.Button(self.topFrame, text="File 1", command=lambda:
-                              self.browse_file(self.input1_var, "Shose file 1"),
+                              self.browse_file(self.input1_var, "File 1"),
                               font=self.text_font, height=self.button_height,
                               width=self.button_width)
         self.ipb1.grid(row=1, column=1, padx=self.spacingX, pady=self.spacingY)
@@ -38,16 +38,12 @@ class FileBrowser(GUI_prerequisite.Prerequisite):
 
         self.ipb2 = tk.Button(self.topFrame, text="File 2",
                               command=lambda: self.browse_file(self.input2_var,
-                                                               "Välj fil 2"),
+                                                               "File 2"),
                               font=self.text_font, height=self.button_height,
                               width=self.button_width)
         self.ipb2.grid(row=2, column=1, padx=self.spacingX, pady=self.spacingY)
 
-        self.second_frame = tk.Frame(self.master)
-        self.second_frame.grid(row=1, sticky="w")
-        self.button_dict = {}
-        self.button_list = ["Union", "Kompliment", "Snitt"]
-        self.rb_var = tk.IntVar()
+        
 
         self.column = 0
         for i in self.button_list:

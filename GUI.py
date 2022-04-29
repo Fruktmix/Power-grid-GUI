@@ -19,9 +19,9 @@ class FileBrowser(GUI_prerequisite.Prerequisite):
 
         self.topFrame.grid()
 
-        Ipb1 = InputRow(self.topFrame, 0, 0, "File 1")
-        Ipb2 = InputRow(self.topFrame, 1, 0, "File 2")
-        Opb2 = InputRow(self.topFrame, 2, 0, "Output", "Output")
+        Ipb1 = Input(self.topFrame, 0, 0, "File 1")
+        Ipb2 = Input(self.topFrame, 1, 0, "File 2")
+        Opb2 = Output(self.topFrame, 2, 0, "Output")
 
         self.bottom_frame = tk.Frame(self.master)
         self.bottom_frame.grid(row=2, sticky="w")
@@ -51,7 +51,7 @@ class FileBrowser(GUI_prerequisite.Prerequisite):
 
 class InputRow(GUI_prerequisite.Prerequisite):
 
-    def __init__(self, frame, row, column, button_name, type="Input"):
+    def __init__(self, frame, row, column):
         super().__init__()
         self.value = tk.StringVar()
 
@@ -62,18 +62,35 @@ class InputRow(GUI_prerequisite.Prerequisite):
         self.entry.grid(row=row, column=column, padx=self.spacingX,
                         pady=self.spacingY)
 
-        if type == "Input":
-            self.button = tk.Button(frame, text=button_name, command=lambda:
-                                    self.browse_file(self.value, button_name),
-                                    font=self.text_font,
-                                    height=self.button_height,
-                                    width=self.button_width)
-        elif type == "Output":
-            self.button = tk.Button(frame, text=button_name, command=lambda:
-                                    self.save_output(self.value, button_name),
-                                    font=self.text_font,
-                                    height=self.button_height,
-                                    width=self.button_width)
+
+class Output(InputRow):
+    def __init__(self, frame, row, column, button_name):
+        super().__init__(frame, row, column)
+
+        self.button = tk.Button(frame, text=button_name, command=lambda:
+                                self.browse_output(self.value, button_name),
+                                font=self.text_font,
+                                height=self.button_height,
+                                width=self.button_width)
+
+        self.button.grid(row=row, column=column+1, padx=self.spacingX,
+                         pady=self.spacingY)
+
+    def browse_output(self, output, text):
+        output.set(filedialog.asksaveasfilename(initialdir=".",
+                   title=text, filetypes=(("txt files", "*.txt"),
+                                          ("all files", "*.*"))))
+
+
+class Input(InputRow):
+    def __init__(self, frame, row, column, button_name):
+        super().__init__(frame, row, column)
+
+        self.button = tk.Button(frame, text=button_name, command=lambda:
+                                self.browse_file(self.value, button_name),
+                                font=self.text_font,
+                                height=self.button_height,
+                                width=self.button_width)
 
         self.button.grid(row=row, column=column+1, padx=self.spacingX,
                          pady=self.spacingY)
@@ -81,11 +98,7 @@ class InputRow(GUI_prerequisite.Prerequisite):
     def browse_file(self, var, text):
         var.set(filedialog.askopenfilename(initialdir=".", title=text,
                 filetypes=(("txt files", "*.txt"), ("all files", "*.*"))))
-
-    def save_output(self, output, text):
-        output.set(filedialog.asksaveasfilename(initialdir=".",
-                   title=text, filetypes=(("txt files", "*.txt"),
-                                          ("all files", "*.*"))))
+    pass
 
 
 if __name__ == "__main__":

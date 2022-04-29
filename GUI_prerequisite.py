@@ -1,6 +1,6 @@
 class Prerequisite:
     def __init__(self):
-        self.entry_box_width = 25
+        self.entry_box_width = 80
 
         self.button_width = 10
         self.button_height = 1

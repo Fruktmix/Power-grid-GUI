@@ -1,5 +1,4 @@
 import tkinter as tk
-from turtle import width
 import GUI_prerequisite
 from tkinter import filedialog
 
@@ -12,9 +11,10 @@ class FileBrowser(GUI_prerequisite.Prerequisite):
     def __init__(self):
         GUI_prerequisite.Prerequisite.__init__(self)
 
-        self.master = tk.Tk(width=300)
+        self.master = tk.Tk()
+        
         self.master.title("File Browser")
-        #sell.mainFrame = tk.Frame(self.master, width=300, height=200)
+
         self.topFrame = tk.Frame(self.master)
 
         self.topFrame.grid()
@@ -55,20 +55,24 @@ class FileBrowser(GUI_prerequisite.Prerequisite):
 
         self.output_var = tk.StringVar()
 
-        self.output_entry = tk.Entry(self.bottom_frame, font=self.text_font,
+        self.output_entry = tk.Entry(self.topFrame, font=self.text_font,
                                      textvariable=self.output_var,
                                      width=self.entry_box_width)
-        self.output_entry.grid(row=1, column=0, padx=self.spacingX,
+        self.output_entry.grid(row=3, column=0, padx=self.spacingX,
                                pady=self.spacingY)
 
-        self.opb = tk.Button(self.bottom_frame, text="Save", command=lambda:
+        self.opb = tk.Button(self.topFrame, text="Save", command=lambda:
                              self.save_output(self.output_var,
                                               "Output destination"),
                              font=self.text_font, height=self.button_height,
                              width=self.button_width)
-        self.opb.grid(row=1, column=1, padx=self.spacingX, pady=self.spacingY)
+        self.opb.grid(row=3, column=1, padx=self.spacingX, pady=self.spacingY)
 
-        self.go_button = tk.Button(self.bottom_frame, text="Kör",
+        self.output_box = tk.Text(self.bottom_frame)
+        self.output_box.grid(row=2, column=0, padx=self.spacingX, pady=self.spacingY)
+        
+        
+        self.go_button = tk.Button(self.bottom_frame, text="Go",
                                    font=self.text_font,
                                    width=self.button_width,
                                    height=self.button_height,
